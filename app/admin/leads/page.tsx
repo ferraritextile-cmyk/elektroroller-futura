@@ -181,7 +181,7 @@ export default function AdminLeadsPage() {
                         </div>
                       )}
 
-                      {lead.license === 'none' && !lead.isPre1965 && (
+                      {lead.quizAnswers?.license === 'none' && !lead.isPre1965 && (
                         <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4">
                           <p className="font-bold text-yellow-900">
                             ⚠️ Kein Führerschein + nach 1965
