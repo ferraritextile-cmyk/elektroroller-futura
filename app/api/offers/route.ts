@@ -17,7 +17,9 @@ export interface OfferRequest {
   status: 'new' | 'contacted' | 'sent' | 'closed';
 }
 
-const OFFERS_FILE = path.join(process.cwd(), 'data', 'offers.json');
+// Vercel: /tmp ist schreibbar, process.cwd() nicht
+const DATA_DIR = process.env.VERCEL ? '/tmp' : path.join(process.cwd(), 'data');
+const OFFERS_FILE = path.join(DATA_DIR, 'offers.json');
 
 // Hilfsfunktion zum Lesen der Angebote
 async function getOffers(): Promise<OfferRequest[]> {

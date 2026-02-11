@@ -5,16 +5,15 @@ import path from 'path';
 import { sendQuizLeadNotification, sendQuizResultToCustomer } from '@/lib/email';
 import { addQuizLeadToSheet } from '@/lib/google-sheets';
 
-// In einer produktiven Umgebung würde dies in eine echte Datenbank gehen
-// Hier verwenden wir eine JSON-Datei als einfachen Speicher
-const LEADS_FILE = path.join(process.cwd(), 'data', 'leads.json');
+// Vercel: /tmp ist schreibbar, process.cwd() nicht
+const DATA_DIR = process.env.VERCEL ? '/tmp' : path.join(process.cwd(), 'data');
+const LEADS_FILE = path.join(DATA_DIR, 'leads.json');
 
 async function ensureDataDirectory() {
-  const dataDir = path.join(process.cwd(), 'data');
   try {
-    await fs.access(dataDir);
+    await fs.access(DATA_DIR);
   } catch {
-    await fs.mkdir(dataDir, { recursive: true });
+    await fs.mkdir(DATA_DIR, { recursive: true });
   }
 }
 
