@@ -77,12 +77,9 @@ export async function POST(request: NextRequest) {
     offers.push(newOffer);
     await saveOffers(offers);
 
-    // Google Sheets Export (asynchron, blockiert nicht die Response)
-    addOfferToSheet(newOffer).catch(err =>
-      console.error('Google Sheets Fehler:', err)
-    );
+    console.log('New offer request:', newOffer);
 
-    // E-Mails senden (asynchron, Fehler werden geloggt aber blockieren nicht)
+    // Alle async-Operationen AWAITEN damit Vercel sie nicht vorzeitig beendet
     const emailData = {
       firstName,
       lastName,
@@ -93,17 +90,11 @@ export async function POST(request: NextRequest) {
       message,
     };
 
-    // Admin-Benachrichtigung senden
-    sendOfferNotificationToAdmin(emailData).catch(err =>
-      console.error('E-Mail an Admin fehlgeschlagen:', err)
-    );
-
-    // Kunden-Bestätigung senden
-    sendOfferConfirmationToCustomer(emailData).catch(err =>
-      console.error('E-Mail an Kunde fehlgeschlagen:', err)
-    );
-
-    console.log('New offer request:', newOffer);
+    await Promise.allSettled([
+      addOfferToSheet(newOffer).catch(err => console.error('Google Sheets Fehler:', err)),
+      sendOfferNotificationToAdmin(emailData).catch(err => console.error('E-Mail an Admin fehlgeschlagen:', err)),
+      sendOfferConfirmationToCustomer(emailData).catch(err => console.error('E-Mail an Kunde fehlgeschlagen:', err)),
+    ]);
 
     return NextResponse.json(
       { success: true, message: 'Anfrage erfolgreich gesendet' },

@@ -90,20 +90,12 @@ export async function POST(request: NextRequest) {
     leads.push(newLead);
     await writeLeads(leads);
 
-    // Google Sheets Export (asynchron, blockiert nicht die Response)
-    addQuizLeadToSheet(newLead).catch(err =>
-      console.error('Google Sheets Fehler:', err)
-    );
-
-    // WhatsApp-Benachrichtigung senden (asynchron, blockiert nicht die Response)
-    sendWhatsAppNotification(newLead).catch(err =>
-      console.error('WhatsApp-Benachrichtigung fehlgeschlagen:', err)
-    );
-
-    // Optional: E-Mail-Benachrichtigung senden
-    sendEmailNotification(newLead).catch(err =>
-      console.error('E-Mail-Benachrichtigung fehlgeschlagen:', err)
-    );
+    // Alle async-Operationen AWAITEN damit Vercel sie nicht vorzeitig beendet
+    await Promise.allSettled([
+      addQuizLeadToSheet(newLead).catch(err => console.error('Google Sheets Fehler:', err)),
+      sendWhatsAppNotification(newLead).catch(err => console.error('WhatsApp-Benachrichtigung fehlgeschlagen:', err)),
+      sendEmailNotification(newLead).catch(err => console.error('E-Mail-Benachrichtigung fehlgeschlagen:', err)),
+    ]);
 
     return NextResponse.json(
       {
