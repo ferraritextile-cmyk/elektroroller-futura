@@ -1,6 +1,10 @@
 import nodemailer from 'nodemailer';
-import path from 'path';
 import { Lead } from '@/types/lead';
+
+// Base-URL für Bilder (auf Vercel die Live-Domain, lokal localhost)
+const IMAGE_BASE_URL = process.env.VERCEL
+  ? 'https://e-mobil-berater.de/images'
+  : 'http://localhost:3000/images';
 
 // E-Mail-Konfiguration
 const transporter = nodemailer.createTransport({
@@ -89,9 +93,7 @@ export async function sendOfferNotificationToAdmin(data: OfferEmailData) {
 
 // Bestätigungs-E-Mail an Kunden senden
 export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
-  const imgDir = path.join(process.cwd(), 'public', 'images');
-
-  // Produktbild und Details anhand des Modellnamens (mit CID für E-Mail-Einbettung)
+  // Produktbild und Details anhand des Modellnamens
   const productMap: Record<string, { file: string; speed: string; highlights: string[] }> = {
     'Vita Care 4000 (15 km/h)': {
       file: 'vita-care-4000.jpg',
@@ -122,17 +124,11 @@ export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
 
   const product = productMap[data.selectedModel] || null;
 
-  // Nodemailer-Attachments für CID-Einbettung (Produkt + Beraterfoto)
-  const attachments = [
-    ...(product ? [{ filename: product.file, path: path.join(imgDir, product.file), cid: 'offerproduct' }] : []),
-    { filename: 'berater-foto.jpg', path: path.join(imgDir, 'berater-foto.jpg'), cid: 'beraterfoto' },
-  ];
-
-  // Produktbild-HTML (mit cid: für eingebettetes Bild)
+  // Produktbild-HTML (URL-basiert statt CID für Vercel-Kompatibilität)
   const productImageHtml = product
     ? `
       <div style="margin: 28px 0; border: 2px solid #0d9488; border-radius: 12px; overflow: hidden; background: #fff;">
-        <img src="cid:offerproduct" alt="${data.selectedModel}" style="width: 100%; height: auto; display: block;" />
+        <img src="${IMAGE_BASE_URL}/${product.file}" alt="${data.selectedModel}" style="width: 100%; height: auto; display: block;" />
         <div style="padding: 20px;">
           <h3 style="margin: 0 0 4px 0; font-size: 22px; color: #0a2540;">${data.selectedModel}</h3>
           <p style="margin: 0 0 16px 0; font-size: 15px; color: #0d9488; font-weight: bold;">${product.speed}</p>
@@ -153,7 +149,6 @@ export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
     from: `"E-Mobil Beratung" <${process.env.SMTP_USER}>`,
     to: data.email,
     subject: `Ihre Anfrage zum ${data.selectedModel} - wir melden uns bei Ihnen`,
-    attachments,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9fafb;">
 
@@ -262,7 +257,7 @@ export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
           <table style="width: 100%; margin: 28px 0 0 0;">
             <tr>
               <td style="width: 80px; vertical-align: top; padding-right: 16px;">
-                <img src="cid:beraterfoto" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
+                <img src="${IMAGE_BASE_URL}/berater-foto.jpg" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
               </td>
               <td style="vertical-align: top;">
                 <p style="font-size: 16px; color: #4b5563; line-height: 1.7; margin: 0 0 4px 0;">
@@ -444,29 +439,18 @@ export async function sendQuizResultToCustomer(lead: Lead) {
   }
 
   const isKabinenroller = lead.recommendedCategory === 'kabinenroller';
-  const imgDir = path.join(process.cwd(), 'public', 'images');
 
-  // Produktbilder je nach Empfehlung (mit CID für E-Mail-Einbettung)
+  // Produktbilder je nach Empfehlung (URL-basiert für Vercel-Kompatibilität)
   const productImages = isKabinenroller
     ? [
-        { name: 'Kabinenroller Cruise', speed: '25 km/h', file: 'kabinenroller-cruise.jpg', cid: 'product1', desc: 'Geschlossene Kabine mit Heizung, 2 Sitzplätze' },
-        { name: 'Kabinenroller Flow', speed: '45 km/h', file: 'kabinenroller-flow.jpg', cid: 'product2', desc: 'Wie ein kleines Auto, Heizung & Scheibenwischer' },
+        { name: 'Kabinenroller Cruise', speed: '25 km/h', file: 'kabinenroller-cruise.jpg', desc: 'Geschlossene Kabine mit Heizung, 2 Sitzplätze' },
+        { name: 'Kabinenroller Flow', speed: '45 km/h', file: 'kabinenroller-flow.jpg', desc: 'Wie ein kleines Auto, Heizung & Scheibenwischer' },
       ]
     : [
-        { name: 'E-Mobil Vita 4000', speed: '15 km/h', file: 'vita-care-4000.jpg', cid: 'product1', desc: 'Komplett führerscheinfrei, 4 Räder' },
-        { name: 'E-Mobil Vita Care 1000', speed: '25 km/h', file: 'vita-care-1000.jpg', cid: 'product2', desc: 'Bis zu 90 km Reichweite, wendig' },
-        { name: 'E-Mobil Neo', speed: '45 km/h', file: 'neo-e-mobil.jpg', cid: 'product3', desc: 'Kraftvoll, große Reichweite' },
+        { name: 'E-Mobil Vita 4000', speed: '15 km/h', file: 'vita-care-4000.jpg', desc: 'Komplett führerscheinfrei, 4 Räder' },
+        { name: 'E-Mobil Vita Care 1000', speed: '25 km/h', file: 'vita-care-1000.jpg', desc: 'Bis zu 90 km Reichweite, wendig' },
+        { name: 'E-Mobil Neo', speed: '45 km/h', file: 'neo-e-mobil.jpg', desc: 'Kraftvoll, große Reichweite' },
       ];
-
-  // Nodemailer-Attachments für CID-Einbettung (Produkte + Beraterfoto)
-  const attachments = [
-    ...productImages.map(p => ({
-      filename: p.file,
-      path: path.join(imgDir, p.file),
-      cid: p.cid,
-    })),
-    { filename: 'berater-foto.jpg', path: path.join(imgDir, 'berater-foto.jpg'), cid: 'beraterfoto' },
-  ];
 
   // Persönliche Anrede (Vorname)
   const firstName = lead.name.split(' ')[0];
@@ -505,11 +489,11 @@ export async function sendQuizResultToCustomer(lead: Lead) {
       </div>
       `;
 
-  // Produktbilder-HTML generieren (mit cid: für eingebettete Bilder)
+  // Produktbilder-HTML generieren (URL-basiert für Vercel-Kompatibilität)
   const productCardsHtml = productImages.map(p => `
     <div style="display: inline-block; width: ${isKabinenroller ? '48%' : '31%'}; vertical-align: top; margin-bottom: 16px; margin-right: 1%;">
       <div style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: #fff;">
-        <img src="cid:${p.cid}" alt="${p.name}" style="width: 100%; height: auto; display: block;" />
+        <img src="${IMAGE_BASE_URL}/${p.file}" alt="${p.name}" style="width: 100%; height: auto; display: block;" />
         <div style="padding: 12px;">
           <p style="margin: 0 0 4px 0; font-weight: bold; color: #134e4a; font-size: 15px;">${p.name}</p>
           <p style="margin: 0 0 4px 0; color: #0d9488; font-size: 13px; font-weight: bold;">${p.speed}</p>
@@ -532,7 +516,6 @@ export async function sendQuizResultToCustomer(lead: Lead) {
     from: `"E-Mobil Beratung" <${process.env.SMTP_USER}>`,
     to: lead.email,
     subject: `Ihr Testergebnis: ${isKabinenroller ? 'Kabinenroller' : 'Elektromobil'} empfohlen - wir rufen Sie an`,
-    attachments,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9fafb;">
 
@@ -648,7 +631,7 @@ export async function sendQuizResultToCustomer(lead: Lead) {
           <table style="width: 100%; margin: 28px 0 0 0;">
             <tr>
               <td style="width: 80px; vertical-align: top; padding-right: 16px;">
-                <img src="cid:beraterfoto" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
+                <img src="${IMAGE_BASE_URL}/berater-foto.jpg" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
               </td>
               <td style="vertical-align: top;">
                 <p style="font-size: 16px; color: #4b5563; line-height: 1.7; margin: 0 0 4px 0;">
@@ -700,8 +683,6 @@ export interface CustomOfferData {
 }
 
 export async function sendCustomOfferToCustomer(data: CustomOfferData) {
-  const imgDir = path.join(process.cwd(), 'public', 'images');
-
   const imageMap: Record<string, string> = {
     'Vita Care 4000 (15 km/h)': 'vita-care-4000.jpg',
     'Vita Care 1000 (25 km/h)': 'vita-care-1000.jpg',
@@ -711,10 +692,6 @@ export async function sendCustomOfferToCustomer(data: CustomOfferData) {
   };
 
   const imageFile = imageMap[data.modelName];
-  const attachments = [
-    ...(imageFile ? [{ filename: imageFile, path: path.join(imgDir, imageFile), cid: 'offermodel' }] : []),
-    { filename: 'berater-foto.jpg', path: path.join(imgDir, 'berater-foto.jpg'), cid: 'beraterfoto' },
-  ];
 
   const firstName = data.customerName.split(' ')[0];
 
@@ -733,7 +710,6 @@ export async function sendCustomOfferToCustomer(data: CustomOfferData) {
     from: `"E-Mobil Beratung" <${process.env.SMTP_USER}>`,
     to: data.customerEmail,
     subject: `Ihr persönliches Angebot: ${data.modelName}`,
-    attachments,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9fafb;">
 
@@ -754,7 +730,7 @@ export async function sendCustomOfferToCustomer(data: CustomOfferData) {
           <!-- Produktbild -->
           ${imageFile ? `
           <div style="margin: 0 0 28px 0; border: 2px solid #0d9488; border-radius: 12px; overflow: hidden; background: #fff;">
-            <img src="cid:offermodel" alt="${data.modelName}" style="width: 100%; height: auto; display: block;" />
+            <img src="${IMAGE_BASE_URL}/${imageFile}" alt="${data.modelName}" style="width: 100%; height: auto; display: block;" />
           </div>
           ` : ''}
 
@@ -820,7 +796,7 @@ export async function sendCustomOfferToCustomer(data: CustomOfferData) {
           <table style="width: 100%; margin: 28px 0 0 0;">
             <tr>
               <td style="width: 80px; vertical-align: top; padding-right: 16px;">
-                <img src="cid:beraterfoto" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
+                <img src="${IMAGE_BASE_URL}/berater-foto.jpg" alt="Ihr Berater" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid #0d9488;" />
               </td>
               <td style="vertical-align: top;">
                 <p style="font-size: 16px; color: #4b5563; line-height: 1.6; margin: 0;">
