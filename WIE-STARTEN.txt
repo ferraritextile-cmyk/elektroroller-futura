@@ -1,0 +1,69 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║     ELEKTROROLLER FUTURA - SCHNELLSTART-ANLEITUNG             ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+📂 PROJEKT-ORDNER:
+   C:\Users\ferra\elektroroller-futura
+
+
+🚀 SO STARTEN SIE DAS PROJEKT:
+
+   Doppelklick auf:  START-SERVER.bat
+
+   → Startet automatisch den Server
+   → Öffnet die Webseite im Browser
+   → Adresse: http://localhost:3000
+
+
+🔧 PROJEKT BEARBEITEN:
+
+   Doppelklick auf:  PROJEKT-ÖFFNEN.bat
+
+   → Öffnet das Projekt in VS Code (falls installiert)
+   → Öffnet ein Terminal zum Arbeiten
+
+
+📊 ADMIN-DASHBOARD ÖFFNEN:
+
+   Doppelklick auf:  ADMIN-ÖFFNEN.bat
+
+   → Öffnet die Lead-Verwaltung
+   → Adresse: http://localhost:3000/admin/leads
+
+
+💡 MANUELL STARTEN (im Terminal):
+
+   1. Öffnen Sie CMD oder PowerShell
+   2. Geben Sie ein:
+
+      cd C:\Users\ferra\elektroroller-futura
+      npm run dev
+
+   3. Öffnen Sie Browser: http://localhost:3000
+
+
+📸 BILDER HINZUFÜGEN:
+
+   Kopieren Sie Ihre Produktfotos in den Ordner:
+   C:\Users\ferra\elektroroller-futura\public\images\
+
+
+🛠️ WICHTIGE DATEIEN:
+
+   app/page.tsx              - Hauptseite bearbeiten
+   app/admin/leads/page.tsx  - Admin-Seite bearbeiten
+   tailwind.config.ts        - Farben anpassen
+   public/images/            - Bilder-Ordner
+
+
+📞 SUPPORT:
+
+   Alle Details finden Sie in der README.md
+
+
+════════════════════════════════════════════════════════════════
+
+Viel Erfolg! 🚀
+
