@@ -6,14 +6,14 @@ const IMAGE_BASE_URL = process.env.VERCEL
   ? 'https://e-mobil-berater.de/images'
   : 'http://localhost:3000/images';
 
-// E-Mail-Konfiguration
+// E-Mail-Konfiguration (trim() gegen trailing newlines in Vercel env vars)
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
+  host: (process.env.SMTP_HOST || 'smtp.gmail.com').trim(),
+  port: parseInt((process.env.SMTP_PORT || '587').trim()),
   secure: false, // true für 465, false für andere Ports
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
+    user: (process.env.SMTP_USER || '').trim(),
+    pass: (process.env.SMTP_PASSWORD || '').trim(),
   },
 });
 
