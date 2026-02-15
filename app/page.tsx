@@ -960,9 +960,12 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white mb-4" style={{ fontFamily: "'DM Serif Display', serif" }}>Rechtliches</h3>
+              <h3 className="text-lg font-bold text-white mb-4" style={{ fontFamily: "'DM Serif Display', serif" }}>Ratgeber & Rechtliches</h3>
               <ul className="space-y-2">
                 {[
+                  { href: '/ratgeber', label: 'Ratgeber' },
+                  { href: '/ratgeber/fuehrerschein-elektroroller', label: 'Führerschein-Ratgeber' },
+                  { href: '/ratgeber/reichweite-elektroroller', label: 'Reichweite-Ratgeber' },
                   { href: '/impressum', label: 'Impressum' },
                   { href: '/datenschutz', label: 'Datenschutz' },
                   { href: '/agb', label: 'AGB' },
