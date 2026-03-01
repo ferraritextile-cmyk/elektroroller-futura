@@ -1,0 +1,191 @@
+<!-- Finanzierungsrechner — Elektroroller Futura — PrestaShop CMS -->
+<style>
+  .efr-calc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 1200px; margin: 0 auto; padding: 40px 16px; color: #1a1a2e; }
+  .efr-calc * { box-sizing: border-box; margin: 0; padding: 0; }
+  .efr-header { text-align: center; margin-bottom: 48px; }
+  .efr-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #0c6b58; margin-bottom: 12px; }
+  .efr-title { font-size: clamp(28px, 4vw, 44px); font-weight: 800; color: #0f2137; margin-bottom: 12px; line-height: 1.2; }
+  .efr-subtitle { font-size: 18px; color: #666; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+  .efr-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .efr-grid { grid-template-columns: 1fr; } }
+
+  .efr-card { background: #fff; border-radius: 20px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.04); }
+  .efr-card-title { font-size: 18px; font-weight: 700; color: #0f2137; margin-bottom: 20px; }
+
+  .efr-models { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 600px) { .efr-models { grid-template-columns: repeat(2, 1fr); } }
+
+  .efr-model { padding: 14px; border-radius: 16px; border: 2px solid transparent; background: #f8f8f8; cursor: pointer; transition: all 0.3s; text-align: left; font-family: inherit; }
+  .efr-model:hover { background: #f0f0f0; border-color: #ddd; }
+  .efr-model.active { border-color: var(--efr-active-color, #0c6b58); background: color-mix(in srgb, var(--efr-active-color, #0c6b58) 6%, white); box-shadow: 0 4px 16px color-mix(in srgb, var(--efr-active-color, #0c6b58) 15%, transparent); transform: scale(1.02); }
+  .efr-model-badge { display: inline-block; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .efr-model-name { font-size: 14px; font-weight: 700; color: #0f2137; }
+  .efr-model-price { font-size: 16px; font-weight: 800; margin-top: 4px; }
+
+  .efr-divider { border: none; border-top: 2px solid #f0ede8; margin: 24px 0; }
+
+  .efr-durations { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .efr-dur { padding: 12px 8px; border-radius: 12px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; background: #f3f3f3; color: #666; font-family: inherit; }
+  .efr-dur:hover { background: #e8e8e8; }
+  .efr-dur.active { color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+  .efr-result-card { text-align: center; position: relative; overflow: hidden; }
+  .efr-result-bar { height: 4px; position: absolute; top: 0; left: 0; right: 0; }
+  .efr-result-badge { display: inline-block; color: #fff; padding: 5px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 12px; margin-top: 8px; }
+  .efr-result-label { font-size: 13px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .efr-result-rate { font-size: clamp(42px, 6vw, 60px); font-weight: 800; line-height: 1.1; margin-bottom: 4px; }
+  .efr-result-period { font-size: 15px; color: #888; margin-bottom: 20px; }
+  .efr-zero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: 700; background: #f0fdf4; color: #16a34a; border: 2px solid #86efac; }
+  .efr-zero-badge svg { width: 18px; height: 18px; }
+
+  .efr-daily { text-align: center; }
+  .efr-daily-label { font-size: 14px; font-weight: 700; color: #888; margin-bottom: 6px; }
+  .efr-daily-value { font-size: 32px; font-weight: 800; color: #0c6b58; margin-bottom: 4px; }
+  .efr-daily-hint { font-size: 14px; color: #888; margin-bottom: 12px; }
+  .efr-daily-emoji { font-size: 28px; display: flex; justify-content: center; gap: 16px; align-items: center; }
+  .efr-daily-emoji .sep { color: #ccc; font-size: 20px; }
+
+  .efr-breakdown { font-size: 15px; }
+  .efr-breakdown-row { display: flex; justify-content: space-between; padding: 8px 0; }
+  .efr-breakdown-row.total { border-top: 2px solid #f0ede8; padding-top: 14px; margin-top: 6px; }
+  .efr-breakdown-label { color: #666; }
+  .efr-breakdown-value { font-weight: 700; color: #0f2137; }
+  .efr-breakdown-green { color: #16a34a; font-weight: 700; }
+
+  .efr-cta { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 28px; border: none; border-radius: 16px; font-size: 18px; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.3s; font-family: inherit; background: linear-gradient(135deg, #d4940a 0%, #f0b429 100%); box-shadow: 0 4px 20px rgba(212, 148, 10, 0.4); min-height: 56px; }
+  .efr-cta:hover { box-shadow: 0 8px 30px rgba(212, 148, 10, 0.55); filter: brightness(1.05); transform: scale(1.02); }
+  .efr-cta svg { width: 22px; height: 22px; }
+
+  .efr-right-stack { display: flex; flex-direction: column; gap: 16px; }
+</style>
+
+<div class="efr-calc" id="efr-calc">
+  <div class="efr-header">
+    <div class="efr-label">Finanzierungsrechner</div>
+    <div class="efr-title">Ihr E-Mobil bequem in Raten zahlen</div>
+    <div class="efr-subtitle">0 % Finanzierung — kein Aufpreis, keine versteckten Kosten. Wählen Sie Ihr Modell und die gewünschte Laufzeit.</div>
+  </div>
+
+  <div class="efr-grid">
+    <!-- Left: Model & Duration -->
+    <div class="efr-card">
+      <div class="efr-card-title">Modell wählen</div>
+      <div class="efr-models" id="efr-models"></div>
+      <hr class="efr-divider">
+      <div class="efr-card-title">Laufzeit wählen</div>
+      <div class="efr-durations" id="efr-durations"></div>
+    </div>
+
+    <!-- Right: Results -->
+    <div class="efr-right-stack">
+      <div class="efr-card efr-result-card" id="efr-result">
+        <div class="efr-result-bar" id="efr-result-bar"></div>
+        <div class="efr-result-badge" id="efr-result-badge"></div>
+        <div class="efr-result-label">Ihre monatliche Rate</div>
+        <div class="efr-result-rate" id="efr-result-rate"></div>
+        <div class="efr-result-period" id="efr-result-period"></div>
+        <div class="efr-zero-badge">
+          <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          0 % Zinsen — keine Zusatzkosten
+        </div>
+      </div>
+
+      <div class="efr-card efr-daily" id="efr-daily">
+        <div class="efr-daily-label">Das sind nur</div>
+        <div class="efr-daily-value" id="efr-daily-value"></div>
+        <div class="efr-daily-hint">pro Tag — weniger als ein Kaffee</div>
+        <div class="efr-daily-emoji"><span>&#9749;</span><span class="sep">&gt;</span><span>&#128690;</span></div>
+      </div>
+
+      <div class="efr-card efr-breakdown" id="efr-breakdown">
+        <div class="efr-breakdown-row"><span class="efr-breakdown-label">Kaufpreis</span><span class="efr-breakdown-value" id="efr-b-price"></span></div>
+        <div class="efr-breakdown-row"><span class="efr-breakdown-label">Laufzeit</span><span class="efr-breakdown-value" id="efr-b-months"></span></div>
+        <div class="efr-breakdown-row"><span class="efr-breakdown-label">Zinssatz</span><span class="efr-breakdown-green">0,00 %</span></div>
+        <div class="efr-breakdown-row total"><span class="efr-breakdown-value">Gesamtkosten</span><span class="efr-breakdown-value" id="efr-b-total"></span></div>
+      </div>
+
+      <a href="/kontaktieren-sie-uns" class="efr-cta" id="efr-cta">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        Angebot mit Finanzierung anfordern
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var models = [
+    { name: 'E-Mobil Vita 4000, 15 km/h', short: 'Vita 4000', price: 2499, badge: '15 km/h', color: '#16a34a' },
+    { name: 'E-Mobil Vita Care 1000', short: 'Vita Care 1000', price: 2999, badge: '25 km/h', color: '#2563eb' },
+    { name: 'Vita Care 4000, 25 km/h', short: 'Vita Care 4000', price: 3499, badge: '25 km/h', color: '#0891b2' },
+    { name: 'E-Mobil Neo, 45 km/h', short: 'Neo E-Mobil', price: 3999, badge: '45 km/h', color: '#d4940a' },
+    { name: 'Kabinenroller Cruise', short: 'Kab. Cruise', price: 4999, badge: '25 km/h Kabine', color: '#0c6b58' },
+    { name: 'Kabinenroller Flow', short: 'Kab. Flow', price: 6999, badge: '45 km/h Kabine', color: '#7c3aed' }
+  ];
+  var durations = [6, 12, 18, 24, 36];
+  var selModel = 1, selDur = 3; // defaults: Vita Care 1000, 24 Mo.
+
+  function fmt(n, dec) {
+    return n.toLocaleString('de-DE', { minimumFractionDigits: dec || 0, maximumFractionDigits: dec || 0 });
+  }
+
+  function renderModels() {
+    var c = document.getElementById('efr-models');
+    c.innerHTML = '';
+    models.forEach(function(m, i) {
+      var btn = document.createElement('button');
+      btn.className = 'efr-model' + (i === selModel ? ' active' : '');
+      btn.style.setProperty('--efr-active-color', m.color);
+      btn.innerHTML = '<div class="efr-model-badge" style="background:' + m.color + '">' + m.badge + '</div>'
+        + '<div class="efr-model-name">' + m.short + '</div>'
+        + '<div class="efr-model-price" style="color:' + m.color + '">' + fmt(m.price) + ' &euro;</div>';
+      btn.onclick = function() { selModel = i; render(); };
+      c.appendChild(btn);
+    });
+  }
+
+  function renderDurations() {
+    var c = document.getElementById('efr-durations');
+    c.innerHTML = '';
+    var m = models[selModel];
+    durations.forEach(function(d, i) {
+      var btn = document.createElement('button');
+      btn.className = 'efr-dur' + (i === selDur ? ' active' : '');
+      if (i === selDur) btn.style.background = 'linear-gradient(135deg, ' + m.color + ', ' + m.color + 'dd)';
+      btn.textContent = d + ' Mo.';
+      btn.onclick = function() { selDur = i; render(); };
+      c.appendChild(btn);
+    });
+  }
+
+  function render() {
+    var m = models[selModel];
+    var dur = durations[selDur];
+    var rate = m.price / dur;
+    var daily = m.price / (dur * 30);
+
+    renderModels();
+    renderDurations();
+
+    // Result card
+    document.getElementById('efr-result').style.borderColor = m.color + '30';
+    document.getElementById('efr-result-bar').style.background = 'linear-gradient(90deg, ' + m.color + ', ' + m.color + '88)';
+    var badge = document.getElementById('efr-result-badge');
+    badge.style.background = m.color;
+    badge.textContent = m.short;
+    document.getElementById('efr-result-rate').style.color = m.color;
+    document.getElementById('efr-result-rate').textContent = fmt(rate, 2) + ' \u20AC';
+    document.getElementById('efr-result-period').textContent = 'pro Monat bei ' + dur + ' Monaten Laufzeit';
+
+    // Daily
+    document.getElementById('efr-daily-value').textContent = fmt(daily, 2) + ' \u20AC';
+
+    // Breakdown
+    document.getElementById('efr-b-price').textContent = fmt(m.price) + ' \u20AC';
+    document.getElementById('efr-b-months').textContent = dur + ' Monate';
+    document.getElementById('efr-b-total').textContent = fmt(m.price) + ' \u20AC';
+  }
+
+  render();
+})();
+</script>

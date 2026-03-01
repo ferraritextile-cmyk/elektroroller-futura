@@ -10,7 +10,7 @@ export default function AGBPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Geltungsbereich</h2>
               <p className="mb-4">
                 Diese Allgemeinen Geschäftsbedingungen gelten für alle Beratungsleistungen und Geschäftsbeziehungen
-                zwischen Phillip Johnson (nachfolgend "Anbieter") und dem Kunden im Bereich Elektromobile und
+                zwischen der Dr. Ferrari GmbH (nachfolgend "Anbieter") und dem Kunden im Bereich Elektromobile und
                 Kabinenroller.
               </p>
             </section>
@@ -105,12 +105,14 @@ export default function AGBPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Streitbeilegung</h2>
               <p className="mb-4">
-                Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
-                https://ec.europa.eu/consumers/odr
+                Plattform der EU-Kommission zur Online-Streitbeilegung:{" "}
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-800 break-all">
+                  https://ec.europa.eu/consumers/odr/
+                </a>
               </p>
               <p className="mb-4">
-                Der Anbieter ist nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer
-                Verbraucherschlichtungsstelle teilzunehmen.
+                Wir sind zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+                nach VSBG nicht verpflichtet und grundsätzlich nicht bereit.
               </p>
             </section>
 

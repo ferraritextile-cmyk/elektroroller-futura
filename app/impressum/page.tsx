@@ -8,15 +8,34 @@ export default function ImpressumPage() {
           <div className="space-y-6 text-lg text-gray-700">
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Angaben gemäß § 5 TMG</h2>
-              <p className="mb-2"><strong>Phillip Johnson</strong></p>
-              <p className="mb-2">Am Stadion 4</p>
-              <p className="mb-4">56281 Emmelshausen</p>
+              <p className="mb-2"><strong>Dr. Ferrari GmbH</strong></p>
+              <p className="mb-2">Industriestraße 1</p>
+              <p className="mb-2">56283 Halsenbach</p>
+              <p className="mb-4">Sitz der Gesellschaft: Emmelshausen</p>
+              <p className="mb-2">Geschäftsführer: Luca Ferrari</p>
+              <p className="mb-2">Amtsgericht Koblenz, HRB 3545</p>
+              <p className="mb-4">USt-IdNr.: DE148756276</p>
             </section>
 
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Kontakt</h2>
-              <p className="mb-2">Telefon: <a href="tel:06747950060" className="text-primary-600 hover:text-primary-800">06747 950060</a></p>
+              <p className="mb-2">Telefon: <a href="tel:06747950060" className="text-primary-600 hover:text-primary-800">06747/950060</a></p>
+              <p className="mb-2">E-Mail: <a href="mailto:elektroroller-futura@DrFerrariGmbH.de" className="text-primary-600 hover:text-primary-800">elektroroller-futura@DrFerrariGmbH.de</a></p>
               <p className="mb-4">Mo-Fr: 08:00-12:00 & 13:00-17:00 Uhr</p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Streitschlichtung</h2>
+              <p className="mb-4">
+                Plattform der EU-Kommission zur Online-Streitbeilegung:{" "}
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-800 break-all">
+                  https://ec.europa.eu/consumers/odr/
+                </a>
+              </p>
+              <p className="mb-4">
+                Wir sind zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+                nach VSBG nicht verpflichtet und grundsätzlich nicht bereit.
+              </p>
             </section>
 
             <section>

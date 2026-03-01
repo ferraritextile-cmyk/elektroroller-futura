@@ -1,0 +1,216 @@
+<!-- Sparrechner — E-Mobil vs. Auto — Elektroroller Futura — PrestaShop CMS -->
+<style>
+  .esr-calc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 1200px; margin: 0 auto; padding: 60px 16px; color: #fff; background: linear-gradient(135deg, #0f2137 0%, #0c3b2f 50%, #0f2137 100%); border-radius: 24px; position: relative; overflow: hidden; }
+  .esr-calc * { box-sizing: border-box; margin: 0; padding: 0; }
+  .esr-header { text-align: center; margin-bottom: 48px; position: relative; z-index: 2; }
+  .esr-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #f0b429; margin-bottom: 12px; }
+  .esr-title { font-size: clamp(28px, 4vw, 44px); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+  .esr-subtitle { font-size: 18px; color: rgba(255,255,255,0.65); max-width: 700px; margin: 0 auto; line-height: 1.6; }
+
+  .esr-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 28px; align-items: start; position: relative; z-index: 2; }
+  @media (max-width: 900px) { .esr-grid { grid-template-columns: 1fr; } }
+
+  .esr-card { background: #fff; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); color: #1a1a2e; }
+  .esr-card-title { font-size: 18px; font-weight: 700; color: #0f2137; margin-bottom: 16px; }
+
+  /* Slider */
+  .esr-slider-wrap { text-align: center; margin-bottom: 16px; }
+  .esr-slider-value { font-size: 36px; font-weight: 800; color: #0c6b58; }
+  .esr-slider-unit { font-size: 18px; color: #666; margin-left: 6px; }
+  .esr-slider { width: 100%; height: 12px; border-radius: 6px; -webkit-appearance: none; appearance: none; outline: none; background: #e5e7eb; margin: 12px 0; }
+  .esr-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 3px solid #0c6b58; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
+  .esr-slider::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 3px solid #0c6b58; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
+  .esr-slider-labels { display: flex; justify-content: space-between; font-size: 13px; color: #999; }
+
+  /* Period toggle */
+  .esr-periods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .esr-period { padding: 12px 8px; border-radius: 12px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; background: #f3f3f3; color: #666; font-family: inherit; }
+  .esr-period:hover { background: #e8e8e8; }
+  .esr-period.active { color: #fff; background: linear-gradient(135deg, #0c6b58, #10a37f); box-shadow: 0 4px 12px rgba(12,107,88,0.3); }
+
+  /* Savings highlight */
+  .esr-savings { text-align: center; background: linear-gradient(135deg, #dcfce7, #f0fdf4); border: 3px solid #86efac; border-radius: 20px; padding: 24px; }
+  .esr-savings-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #0c6b58; margin-bottom: 6px; }
+  .esr-savings-value { font-size: clamp(40px, 5vw, 52px); font-weight: 800; color: #0c6b58; line-height: 1.1; }
+  .esr-savings-hint { font-size: 14px; color: #666; margin-top: 6px; }
+
+  /* Cost bars */
+  .esr-bar-group { margin-bottom: 20px; }
+  .esr-bar-label { font-size: 15px; font-weight: 700; color: #0f2137; margin-bottom: 8px; }
+  .esr-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .esr-bar-tag { font-size: 12px; font-weight: 700; width: 46px; text-align: right; flex-shrink: 0; }
+  .esr-bar-tag.auto { color: rgba(220,38,38,0.7); }
+  .esr-bar-tag.emobil { color: #0c6b58; }
+  .esr-bar-track { flex: 1; height: 30px; border-radius: 8px; overflow: hidden; }
+  .esr-bar-track.auto-bg { background: #fef2f2; }
+  .esr-bar-track.emobil-bg { background: #f0fdf4; }
+  .esr-bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; transition: width 0.7s ease; min-width: 50px; }
+  .esr-bar-fill.auto-fill { background: linear-gradient(90deg, #ef4444, #dc2626); }
+  .esr-bar-fill.emobil-fill { background: linear-gradient(90deg, #0c6b58, #10a37f); }
+  .esr-bar-amount { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; }
+
+  /* Totals */
+  .esr-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 2px solid #f0ede8; }
+  .esr-total-box { border-radius: 16px; padding: 16px; text-align: center; }
+  .esr-total-box.auto { background: #fef2f2; border: 2px solid #fecaca; }
+  .esr-total-box.emobil { background: #f0fdf4; border: 2px solid #86efac; }
+  .esr-total-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .esr-total-label.auto { color: rgba(220,38,38,0.7); }
+  .esr-total-label.emobil { color: #0c6b58; }
+  .esr-total-value { font-size: 26px; font-weight: 800; }
+  .esr-total-value.auto { color: #dc2626; }
+  .esr-total-value.emobil { color: #0c6b58; }
+
+  .esr-footnote { font-size: 12px; color: #999; margin-top: 20px; line-height: 1.5; }
+
+  .esr-left-stack { display: flex; flex-direction: column; gap: 16px; }
+</style>
+
+<div class="esr-calc" id="esr-calc">
+  <div class="esr-header">
+    <div class="esr-label">Sparrechner</div>
+    <div class="esr-title">So viel sparen Sie mit einem E-Mobil</div>
+    <div class="esr-subtitle">Vergleichen Sie die laufenden Kosten eines Autos mit einem Elektromobil. Die Zahlen sprechen für sich.</div>
+  </div>
+
+  <div class="esr-grid">
+    <!-- Left: Controls -->
+    <div class="esr-left-stack">
+      <div class="esr-card">
+        <div class="esr-card-title">Ihre monatliche Fahrleistung</div>
+        <div class="esr-slider-wrap">
+          <span class="esr-slider-value" id="esr-km-val">500</span>
+          <span class="esr-slider-unit">km/Monat</span>
+        </div>
+        <input type="range" class="esr-slider" id="esr-km" min="100" max="2000" step="50" value="500">
+        <div class="esr-slider-labels"><span>100 km</span><span>2.000 km</span></div>
+      </div>
+
+      <div class="esr-card">
+        <div class="esr-card-title">Zeitraum</div>
+        <div class="esr-periods" id="esr-periods"></div>
+      </div>
+
+      <div class="esr-savings" id="esr-savings">
+        <div class="esr-savings-label" id="esr-savings-label">Ihre Ersparnis pro Jahr</div>
+        <div class="esr-savings-value" id="esr-savings-value">0 €</div>
+        <div class="esr-savings-hint">gegenüber einem vergleichbaren Kleinwagen</div>
+      </div>
+    </div>
+
+    <!-- Right: Comparison -->
+    <div class="esr-card" id="esr-bars">
+      <div class="esr-card-title" id="esr-bars-title">Kostenvergleich pro Jahr</div>
+      <div id="esr-bar-container"></div>
+      <div class="esr-totals">
+        <div class="esr-total-box auto">
+          <div class="esr-total-label auto">Auto gesamt</div>
+          <div class="esr-total-value auto" id="esr-total-auto">0 €</div>
+        </div>
+        <div class="esr-total-box emobil">
+          <div class="esr-total-label emobil">E-Mobil gesamt</div>
+          <div class="esr-total-value emobil" id="esr-total-emobil">0 €</div>
+        </div>
+      </div>
+      <div class="esr-footnote">
+        * Berechnung basiert auf Durchschnittswerten: Benzin 1,75 €/L, Verbrauch 6,5 L/100km (Kleinwagen), Strom 0,35 €/kWh, E-Mobil 5 kWh/100km. Versicherung: Kfz-Haftpflicht vs. E-Mobil-Kennzeichenversicherung.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var periods = [
+    { key: 'month', label: 'Monat', mult: 1, text: 'pro Monat' },
+    { key: 'year', label: 'Jahr', mult: 12, text: 'pro Jahr' },
+    { key: '5years', label: '5 Jahre', mult: 60, text: 'in 5 Jahren' }
+  ];
+  var selPeriod = 1; // default: year
+
+  // Cost parameters
+  var fuelPrice = 1.75, fuelConsumption = 6.5;
+  var autoInsMonth = 75, autoTaxMonth = 15, autoMaintMonth = 55;
+  var elecPrice = 0.35, elecConsumption = 5;
+  var rollerInsMonth = 7, rollerTaxMonth = 0, rollerMaintMonth = 8;
+
+  var categories = [
+    { label: 'Kraftstoff / Strom', autoFn: function(km, m) { return Math.round(km * fuelConsumption / 100 * fuelPrice * m); }, rollerFn: function(km, m) { return Math.round(km * elecConsumption / 100 * elecPrice * m); } },
+    { label: 'Versicherung', autoFn: function(km, m) { return autoInsMonth * m; }, rollerFn: function(km, m) { return rollerInsMonth * m; } },
+    { label: 'Steuer', autoFn: function(km, m) { return autoTaxMonth * m; }, rollerFn: function(km, m) { return rollerTaxMonth * m; } },
+    { label: 'Wartung & TÜV', autoFn: function(km, m) { return autoMaintMonth * m; }, rollerFn: function(km, m) { return rollerMaintMonth * m; } }
+  ];
+
+  function fmt(n) { return n.toLocaleString('de-DE'); }
+
+  function renderPeriods() {
+    var c = document.getElementById('esr-periods');
+    c.innerHTML = '';
+    periods.forEach(function(p, i) {
+      var btn = document.createElement('button');
+      btn.className = 'esr-period' + (i === selPeriod ? ' active' : '');
+      btn.textContent = p.label;
+      btn.onclick = function() { selPeriod = i; render(); };
+      c.appendChild(btn);
+    });
+  }
+
+  function render() {
+    var km = parseInt(document.getElementById('esr-km').value);
+    var mult = periods[selPeriod].mult;
+    var periodText = periods[selPeriod].text;
+
+    document.getElementById('esr-km-val').textContent = km;
+
+    // Update slider background
+    var slider = document.getElementById('esr-km');
+    var pct = ((km - 100) / 1900) * 100;
+    slider.style.background = 'linear-gradient(to right, #0c6b58 0%, #10a37f ' + pct + '%, #e5e7eb ' + pct + '%, #e5e7eb 100%)';
+
+    renderPeriods();
+
+    // Compute costs
+    var autoTotal = 0, rollerTotal = 0;
+    var costs = [];
+    var maxCost = 0;
+    categories.forEach(function(cat) {
+      var a = cat.autoFn(km, mult);
+      var r = cat.rollerFn(km, mult);
+      autoTotal += a; rollerTotal += r;
+      if (a > maxCost) maxCost = a;
+      costs.push({ label: cat.label, auto: a, roller: r });
+    });
+
+    // Render bars
+    var container = document.getElementById('esr-bar-container');
+    container.innerHTML = '';
+    costs.forEach(function(c) {
+      var autoW = Math.max((c.auto / maxCost) * 100, 3);
+      var rollerW = Math.max((c.roller / maxCost) * 100, 3);
+      container.innerHTML += '<div class="esr-bar-group">'
+        + '<div class="esr-bar-label">' + c.label + '</div>'
+        + '<div class="esr-bar-row"><span class="esr-bar-tag auto">Auto</span><div class="esr-bar-track auto-bg"><div class="esr-bar-fill auto-fill" style="width:' + autoW + '%"><span class="esr-bar-amount">' + fmt(c.auto) + ' &euro;</span></div></div></div>'
+        + '<div class="esr-bar-row"><span class="esr-bar-tag emobil">E-Mobil</span><div class="esr-bar-track emobil-bg"><div class="esr-bar-fill emobil-fill" style="width:' + rollerW + '%"><span class="esr-bar-amount">' + fmt(c.roller) + ' &euro;</span></div></div></div>'
+        + '</div>';
+    });
+
+    // Totals
+    document.getElementById('esr-total-auto').textContent = fmt(autoTotal) + ' \u20AC';
+    document.getElementById('esr-total-emobil').textContent = fmt(rollerTotal) + ' \u20AC';
+
+    // Savings
+    var savings = autoTotal - rollerTotal;
+    document.getElementById('esr-savings-label').textContent = 'Ihre Ersparnis ' + periodText;
+    document.getElementById('esr-savings-value').textContent = fmt(savings) + ' \u20AC';
+
+    // Bars title
+    document.getElementById('esr-bars-title').textContent = 'Kostenvergleich ' + periodText;
+  }
+
+  // Slider event
+  document.getElementById('esr-km').addEventListener('input', render);
+
+  // Initial render
+  render();
+})();
+</script>

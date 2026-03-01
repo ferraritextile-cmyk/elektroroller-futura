@@ -1,6 +1,22 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { DM_Serif_Display, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+
+const dmSerifDisplay = DM_Serif_Display({
+  weight: ["400"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-dm-serif",
+  display: "swap",
+});
+
+const sourceSans3 = Source_Sans_3({
+  weight: ["400", "500", "600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-source-sans",
+  display: "swap",
+});
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
@@ -11,17 +27,17 @@ const PHONE = "06747 950060";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Elektroroller Futura - Elektromobile & Kabinenroller | Führerscheinfrei ab 15 Jahren",
+    default: "Elektroroller & Elektromobile führerscheinfrei kaufen | Futura",
     template: "%s | Elektroroller Futura",
   },
   description:
-    "Elektromobile & Kabinenroller führerscheinfrei fahren. Kostenlose Experten-Beratung: Welches E-Mobil dürfen Sie ohne Führerschein fahren? Jetzt 2-Minuten-Test machen!",
+    "Elektroroller & Elektromobile führerscheinfrei ab 15 Jahren. Kostenloser 2-Minuten-Test zeigt, welches Fahrzeug Sie ohne Führerschein fahren dürfen. Jetzt Beratung starten!",
   keywords: [
+    "Elektroroller",
     "Elektromobil",
     "Kabinenroller",
     "führerscheinfrei",
     "Seniorenmobil",
-    "Elektroroller",
     "E-Mobil",
     "Elektromobil ohne Führerschein",
     "Kabinenroller 25 km/h",
@@ -47,9 +63,9 @@ export const metadata: Metadata = {
     locale: "de_DE",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Elektroroller Futura - Elektromobile & Kabinenroller führerscheinfrei",
+    title: "Elektroroller & Elektromobile führerscheinfrei kaufen | Futura",
     description:
-      "Finden Sie heraus, welches Elektromobil oder Kabinenroller Sie ohne Führerschein fahren dürfen. Kostenlose Experten-Beratung am Telefon: 06747 950060",
+      "Elektroroller & Elektromobile führerscheinfrei ab 15 Jahren. Kostenloser 2-Minuten-Test zeigt, welches Fahrzeug Sie ohne Führerschein fahren dürfen.",
     images: [
       {
         url: `${SITE_URL}/images/hero-header.jpg`,
@@ -62,9 +78,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elektroroller Futura - Elektromobile & Kabinenroller",
+    title: "Elektroroller & Elektromobile führerscheinfrei kaufen | Futura",
     description:
-      "Elektromobil oder Kabinenroller ohne Führerschein fahren? Kostenlose Beratung: 06747 950060",
+      "Elektroroller & Elektromobile führerscheinfrei ab 15 Jahren. Kostenloser 2-Minuten-Test: Welches Fahrzeug dürfen Sie fahren?",
     images: [`${SITE_URL}/images/hero-header.jpg`],
   },
   robots: {
@@ -387,7 +403,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de">
+    <html lang="de" className={`${dmSerifDisplay.variable} ${sourceSans3.variable}`}>
       <head>
         <link rel="icon" href="/images/logo.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/images/logo.svg" />

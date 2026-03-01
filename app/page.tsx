@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { QuizAnswers, LeadFormData } from '@/types/lead';
 import * as gtag from '@/lib/gtag';
+import SavingsCalculator from '@/components/SavingsCalculator';
+import FinancingCalculator from '@/components/FinancingCalculator';
 
 /* ─── Scroll-reveal hook ─── */
 function useReveal() {
@@ -253,7 +255,7 @@ export default function Home() {
             <div>
               <div className="section-label" style={{ color: 'var(--amber-light)' }}>E-Mobil Beratung</div>
               <h1 className="text-5xl md:text-6xl lg:text-[3.6rem] font-bold text-white mb-8 leading-[1.1]">
-                Wieder selbstständig unterwegs.{' '}
+                Mit dem Elektroroller wieder selbstständig unterwegs.{' '}
                 <span style={{ color: 'var(--amber-light)' }}>Ohne Führerschein.</span>
               </h1>
               <p className="text-xl md:text-2xl text-white/85 mb-10 leading-relaxed max-w-2xl">
@@ -827,6 +829,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ━━━━━━━━━━ FINANCING CALCULATOR ━━━━━━━━━━ */}
+      <FinancingCalculator onRequestOffer={openOfferModal} />
+
+      {/* ━━━━━━━━━━ SAVINGS CALCULATOR ━━━━━━━━━━ */}
+      <SavingsCalculator />
 
       {/* ━━━━━━━━━━ MID-PAGE CTA ━━━━━━━━━━ */}
       <section className="py-14" style={{ background: 'linear-gradient(135deg, var(--emerald) 0%, #0c6b58 50%, var(--navy) 100%)' }}>
