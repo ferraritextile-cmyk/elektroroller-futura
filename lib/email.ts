@@ -94,33 +94,56 @@ export async function sendOfferNotificationToAdmin(data: OfferEmailData) {
 // Bestätigungs-E-Mail an Kunden senden
 export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
   // Produktbild und Details anhand des Modellnamens
-  const productMap: Record<string, { file: string; speed: string; highlights: string[] }> = {
-    'Vita Care 4000 (15 km/h)': {
+  const productData: { file: string; speed: string; highlights: string[]; shopUrl: string; aliases: string[] }[] = [
+    {
       file: 'vita-care-4000.jpg',
       speed: '15 km/h',
       highlights: ['Komplett führerscheinfrei', '4 Räder, sicher und stabil', 'Straßenzugelassen in ganz DE'],
+      shopUrl: 'https://elektroroller-futura.de/e-mobile-fuehrerscheinfrei?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=vita4000',
+      aliases: ['Vita Care 4000 (15 km/h)', 'E-Mobil Vita 4000, 15 km/h'],
     },
-    'Vita Care 1000 (25 km/h)': {
+    {
       file: 'vita-care-1000.jpg',
       speed: '25 km/h',
       highlights: ['Bis zu 90 km Reichweite', 'Wendig und kompakt', 'Führerscheinfrei (geb. vor 01.04.1965)'],
+      shopUrl: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=vitacare1000',
+      aliases: ['Vita Care 1000 (25 km/h)', 'E-Mobil Vita Care 1000'],
     },
-    'Neo E-Mobil (45 km/h)': {
+    {
       file: 'neo-e-mobil.jpg',
       speed: '45 km/h',
       highlights: ['Kraftvoll auf der Straße', 'Große Reichweite', 'Mit Führerschein AM oder B'],
+      shopUrl: 'https://elektroroller-futura.de/elektro-quad?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=neo',
+      aliases: ['Neo E-Mobil (45 km/h)', 'E-Mobil Neo, 45 km/h'],
     },
-    'Kabinenroller Cruise (25 km/h)': {
+    {
       file: 'kabinenroller-cruise.jpg',
       speed: '25 km/h',
       highlights: ['Geschlossene Kabine mit Heizung', '2 Sitzplätze', 'Führerscheinfrei (geb. vor 01.04.1965)'],
+      shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=cruise',
+      aliases: ['Kabinenroller Cruise (25 km/h)', 'Kabinenroller Cruise'],
     },
-    'Kabinenroller Flow (45 km/h)': {
+    {
+      file: 'vita-care-4000-25kmh.jpg',
+      speed: '25 km/h',
+      highlights: ['Stabiler Stand auf 4 Rädern', 'Bequemer Ein- und Ausstieg', 'Mit Führerschein AM oder B'],
+      shopUrl: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=vitacare4000-25',
+      aliases: ['E-Mobil Vita Care 4000, 25 km/h'],
+    },
+    {
       file: 'kabinenroller-flow.jpg',
       speed: '45 km/h',
       highlights: ['Wie ein kleines Auto', 'Heizung & Scheibenwischer', '2 Sitzplätze, voller Komfort'],
+      shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=flow',
+      aliases: ['Kabinenroller Flow (45 km/h)', 'Kabinenroller Flow'],
     },
-  };
+  ];
+  const productMap: Record<string, typeof productData[0]> = {};
+  for (const p of productData) {
+    for (const alias of p.aliases) {
+      productMap[alias] = p;
+    }
+  }
 
   const product = productMap[data.selectedModel] || null;
 
@@ -140,10 +163,24 @@ export async function sendOfferConfirmationToCustomer(data: OfferEmailData) {
             </tr>
             `).join('')}
           </table>
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="${product.shopUrl}" style="display: inline-block; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">
+              Jetzt im Shop ansehen &rarr;
+            </a>
+          </div>
         </div>
       </div>
     `
-    : '';
+    : `
+      <div style="margin: 28px 0; text-align: center;">
+        <p style="font-size: 16px; color: #374151; margin: 0 0 16px 0;">
+          Schauen Sie sich den <strong style="color: #0d9488;">${data.selectedModel}</strong> direkt in unserem Shop an:
+        </p>
+        <a href="https://elektroroller-futura.de/?utm_source=emobilberater&utm_medium=email&utm_campaign=angebot&utm_content=fallback" style="display: inline-block; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">
+          Jetzt im Shop ansehen &rarr;
+        </a>
+      </div>
+    `;
 
   const mailOptions = {
     from: `"E-Mobil Beratung" <${process.env.SMTP_USER}>`,
@@ -443,13 +480,13 @@ export async function sendQuizResultToCustomer(lead: Lead) {
   // Produktbilder je nach Empfehlung (URL-basiert für Vercel-Kompatibilität)
   const productImages = isKabinenroller
     ? [
-        { name: 'Kabinenroller Cruise', speed: '25 km/h', file: 'kabinenroller-cruise.jpg', desc: 'Geschlossene Kabine mit Heizung, 2 Sitzplätze' },
-        { name: 'Kabinenroller Flow', speed: '45 km/h', file: 'kabinenroller-flow.jpg', desc: 'Wie ein kleines Auto, Heizung & Scheibenwischer' },
+        { name: 'Kabinenroller Cruise', speed: '25 km/h', file: 'kabinenroller-cruise.jpg', desc: 'Geschlossene Kabine mit Heizung, 2 Sitzplätze', shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=email&utm_campaign=testergebnis&utm_content=cruise' },
+        { name: 'Kabinenroller Flow', speed: '45 km/h', file: 'kabinenroller-flow.jpg', desc: 'Wie ein kleines Auto, Heizung & Scheibenwischer', shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=email&utm_campaign=testergebnis&utm_content=flow' },
       ]
     : [
-        { name: 'E-Mobil Vita 4000', speed: '15 km/h', file: 'vita-care-4000.jpg', desc: 'Komplett führerscheinfrei, 4 Räder' },
-        { name: 'E-Mobil Vita Care 1000', speed: '25 km/h', file: 'vita-care-1000.jpg', desc: 'Bis zu 90 km Reichweite, wendig' },
-        { name: 'E-Mobil Neo', speed: '45 km/h', file: 'neo-e-mobil.jpg', desc: 'Kraftvoll, große Reichweite' },
+        { name: 'E-Mobil Vita 4000', speed: '15 km/h', file: 'vita-care-4000.jpg', desc: 'Komplett führerscheinfrei, 4 Räder', shopUrl: 'https://elektroroller-futura.de/e-mobile-fuehrerscheinfrei?utm_source=emobilberater&utm_medium=email&utm_campaign=testergebnis&utm_content=vita4000' },
+        { name: 'E-Mobil Vita Care 1000', speed: '25 km/h', file: 'vita-care-1000.jpg', desc: 'Bis zu 90 km Reichweite, wendig', shopUrl: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=email&utm_campaign=testergebnis&utm_content=vitacare1000' },
+        { name: 'E-Mobil Neo', speed: '45 km/h', file: 'neo-e-mobil.jpg', desc: 'Kraftvoll, große Reichweite', shopUrl: 'https://elektroroller-futura.de/elektro-quad?utm_source=emobilberater&utm_medium=email&utm_campaign=testergebnis&utm_content=neo' },
       ];
 
   // Persönliche Anrede (Vorname)
@@ -497,7 +534,10 @@ export async function sendQuizResultToCustomer(lead: Lead) {
         <div style="padding: 12px;">
           <p style="margin: 0 0 4px 0; font-weight: bold; color: #134e4a; font-size: 15px;">${p.name}</p>
           <p style="margin: 0 0 4px 0; color: #0d9488; font-size: 13px; font-weight: bold;">${p.speed}</p>
-          <p style="margin: 0; color: #6b7280; font-size: 13px;">${p.desc}</p>
+          <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 13px;">${p.desc}</p>
+          <a href="${p.shopUrl}" style="display: block; background: #0d9488; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; text-align: center;">
+            Im Shop ansehen
+          </a>
         </div>
       </div>
     </div>

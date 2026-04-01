@@ -77,3 +77,10 @@ export const trackFaqOpened = (question: string) => {
     question,
   });
 };
+
+export const trackShopClick = (model: string) => {
+  event('shop_click', {
+    event_category: 'conversion',
+    model,
+  });
+};

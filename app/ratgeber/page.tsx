@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const SITE_URL = "https://elektroroller-futura.de";
+const SITE_URL = "https://e-mobil-berater.de";
 
 export const metadata: Metadata = {
   title: "Ratgeber - Elektromobile & Kabinenroller Wissen",
@@ -57,6 +57,36 @@ const articles = [
     categoryColor: "#0c6b58",
     readTime: "8 Min. Lesezeit",
     date: "15. Februar 2026",
+  },
+  {
+    slug: "elektromobil-kosten",
+    title: "Was kostet ein Elektromobil? Alle Kosten im Überblick",
+    description:
+      "Anschaffung, Strom, Versicherung, Wartung — was ein Seniorenmobil wirklich kostet und warum es günstiger als ein Auto ist.",
+    category: "Kosten & Finanzen",
+    categoryColor: "#d4940a",
+    readTime: "7 Min. Lesezeit",
+    date: "1. April 2026",
+  },
+  {
+    slug: "seniorenmobil-vergleich",
+    title: "Seniorenmobil Vergleich 2026 — Welches E-Mobil passt zu Ihnen?",
+    description:
+      "6 Modelle im direkten Vergleich: Geschwindigkeit, Reichweite, Führerschein, Preis. So finden Sie das richtige Elektromobil.",
+    category: "Kaufberatung",
+    categoryColor: "#7c3aed",
+    readTime: "10 Min. Lesezeit",
+    date: "1. April 2026",
+  },
+  {
+    slug: "foerderung-elektromobil",
+    title: "Förderung & Zuschüsse für Elektromobile 2026",
+    description:
+      "Krankenkasse, Pflegekasse, kommunale Programme und Ratenzahlung — alle Fördermöglichkeiten für Ihr Seniorenmobil.",
+    category: "Förderung & Zuschüsse",
+    categoryColor: "#16a34a",
+    readTime: "8 Min. Lesezeit",
+    date: "1. April 2026",
   },
 ];
 

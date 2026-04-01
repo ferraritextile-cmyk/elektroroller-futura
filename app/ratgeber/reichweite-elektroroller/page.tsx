@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const SITE_URL = "https://elektroroller-futura.de";
+const SITE_URL = "https://e-mobil-berater.de";
 const PAGE_URL = `${SITE_URL}/ratgeber/reichweite-elektroroller`;
 
 export const metadata: Metadata = {

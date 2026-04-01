@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     email: false,
   },
   alternates: {
-    canonical: SITE_URL,
+    canonical: "https://e-mobil-berater.de",
   },
   openGraph: {
     type: "website",
@@ -116,8 +116,11 @@ const localBusinessSchema = {
   priceRange: "€€",
   address: {
     "@type": "PostalAddress",
-    addressCountry: "DE",
+    streetAddress: "Industriestraße 1",
+    addressLocality: "Halsenbach",
+    postalCode: "56283",
     addressRegion: "Rheinland-Pfalz",
+    addressCountry: "DE",
   },
   openingHoursSpecification: [
     {
@@ -167,6 +170,8 @@ const localBusinessSchema = {
   ],
 };
 
+const SHOP_URL = "https://elektroroller-futura.de";
+
 const productsSchema = [
   {
     "@context": "https://schema.org",
@@ -181,7 +186,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "1299",
+      url: `${SHOP_URL}/e-mobile-fuehrerscheinfrei`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [
@@ -203,7 +209,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "1599",
+      url: `${SHOP_URL}/elektromobilitaet-fuer-senioren`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [
@@ -225,7 +232,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "2499",
+      url: `${SHOP_URL}/elektro-quad`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [
@@ -247,7 +255,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "2399",
+      url: `${SHOP_URL}/elektromobilitaet-fuer-senioren`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [
@@ -269,7 +278,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "6999",
+      url: `${SHOP_URL}/elektro-kabinenroller-futura`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [
@@ -291,7 +301,8 @@ const productsSchema = [
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       priceCurrency: "EUR",
-      url: SITE_URL,
+      price: "7999",
+      url: `${SHOP_URL}/elektro-kabinenroller-futura`,
       seller: { "@type": "Organization", name: SITE_NAME },
     },
     additionalProperty: [

@@ -223,12 +223,12 @@ export default function Home() {
 
   /* ─── Products data ─── */
   const products = [
-    { name: 'E-Mobil Vita 4000, 15 km/h', badge: '15 km/h 4-Rad', badgeColor: '#16a34a', image: '/images/vita-care-4000.jpg', gradient: 'from-emerald-50 to-teal-50', desc: 'Ohne Führerschein losfahren. Ab 15 Jahren erlaubt, alle Papiere inklusive.', features: ['Komplett führerscheinfrei', 'Straßenzugelassen in ganz DE', 'Sicher auf 4 Rädern'] },
-    { name: 'E-Mobil Vita Care 1000', badge: '25 km/h 3-Rad', badgeColor: '#2563eb', image: '/images/vita-care-1000.jpg', gradient: 'from-blue-50 to-indigo-50', desc: 'Wendig durch enge Gassen, bis zu 90 km weit. Ihr Begleiter für den Alltag.', features: ['Bis zu 90 km Reichweite', 'Kompakt genug für enge Wege', 'Führerscheinfrei (geb. vor 1965)'] },
-    { name: 'E-Mobil Neo, 45 km/h', badge: '45 km/h 4-Rad', badgeColor: '#d4940a', image: '/images/neo-e-mobil.jpg', gradient: 'from-amber-50 to-orange-50', desc: 'Für alle, die auch mal weiter fahren wollen. Kraftvoll und zuverlässig.', features: ['45 km/h auf der Straße', 'Große Reichweite', 'Mit Führerschein AM oder B'] },
-    { name: 'E-Mobil Vita Care 4000, 25 km/h', badge: '25 km/h 4-Rad', badgeColor: '#0891b2', image: '/images/vita-care-4000-25kmh.jpg', gradient: 'from-cyan-50 to-sky-50', desc: 'Stabil, bequem und sicher. Ideal für tägliche Fahrten zum Einkaufen oder Arzt.', features: ['Stabiler Stand auf 4 Rädern', 'Bequemer Ein- und Ausstieg', 'Mit Führerschein AM oder B'] },
-    { name: 'Kabinenroller Cruise', badge: '25 km/h 3-Rad Kabine', badgeColor: '#0c6b58', image: '/images/kabinenroller-cruise.jpg', gradient: 'from-emerald-50 to-green-50', desc: 'Bei Regen und Kälte trocken und warm ankommen. Platz für zwei Personen.', features: ['Geschlossene Kabine mit Heizung', '2 Sitzplätze', 'Führerscheinfrei (geb. vor 1965)'] },
-    { name: 'Kabinenroller Flow', badge: '45 km/h 4-Rad Kabine', badgeColor: '#7c3aed', image: '/images/kabinenroller-flow.jpg', gradient: 'from-violet-50 to-purple-50', desc: 'Fährt sich wie ein kleines Auto. Heizung, Scheibenwischer, voller Komfort.', features: ['Wie Autofahren, nur elektrisch', 'Heizung & Scheibenwischer', '2 Sitzplätze, 45 km/h'] },
+    { name: 'E-Mobil Vita 4000, 15 km/h', badge: '15 km/h 4-Rad', badgeColor: '#16a34a', image: '/images/vita-care-4000.jpg', gradient: 'from-emerald-50 to-teal-50', desc: 'Ohne Führerschein losfahren. Ab 15 Jahren erlaubt, alle Papiere inklusive.', features: ['Komplett führerscheinfrei', 'Straßenzugelassen in ganz DE', 'Sicher auf 4 Rädern'], shopUrl: 'https://elektroroller-futura.de/e-mobile-fuehrerscheinfrei?utm_source=emobilberater&utm_medium=landing&utm_campaign=seniorenmobil&utm_content=vita4000' },
+    { name: 'E-Mobil Vita Care 1000', badge: '25 km/h 3-Rad', badgeColor: '#2563eb', image: '/images/vita-care-1000.jpg', gradient: 'from-blue-50 to-indigo-50', desc: 'Wendig durch enge Gassen, bis zu 90 km weit. Ihr Begleiter für den Alltag.', features: ['Bis zu 90 km Reichweite', 'Kompakt genug für enge Wege', 'Führerscheinfrei (geb. vor 1965)'], shopUrl: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=landing&utm_campaign=seniorenmobil&utm_content=vitacare1000' },
+    { name: 'E-Mobil Neo, 45 km/h', badge: '45 km/h 4-Rad', badgeColor: '#d4940a', image: '/images/neo-e-mobil.jpg', gradient: 'from-amber-50 to-orange-50', desc: 'Für alle, die auch mal weiter fahren wollen. Kraftvoll und zuverlässig.', features: ['45 km/h auf der Straße', 'Große Reichweite', 'Mit Führerschein AM oder B'], shopUrl: 'https://elektroroller-futura.de/elektro-quad?utm_source=emobilberater&utm_medium=landing&utm_campaign=seniorenmobil&utm_content=neo' },
+    { name: 'E-Mobil Vita Care 4000, 25 km/h', badge: '25 km/h 4-Rad', badgeColor: '#0891b2', image: '/images/vita-care-4000-25kmh.jpg', gradient: 'from-cyan-50 to-sky-50', desc: 'Stabil, bequem und sicher. Ideal für tägliche Fahrten zum Einkaufen oder Arzt.', features: ['Stabiler Stand auf 4 Rädern', 'Bequemer Ein- und Ausstieg', 'Mit Führerschein AM oder B'], shopUrl: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=landing&utm_campaign=seniorenmobil&utm_content=vitacare4000' },
+    { name: 'Kabinenroller Cruise', badge: '25 km/h 3-Rad Kabine', badgeColor: '#0c6b58', image: '/images/kabinenroller-cruise.jpg', gradient: 'from-emerald-50 to-green-50', desc: 'Bei Regen und Kälte trocken und warm ankommen. Platz für zwei Personen.', features: ['Geschlossene Kabine mit Heizung', '2 Sitzplätze', 'Führerscheinfrei (geb. vor 1965)'], shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=landing&utm_campaign=kabinenroller&utm_content=cruise' },
+    { name: 'Kabinenroller Flow', badge: '45 km/h 4-Rad Kabine', badgeColor: '#7c3aed', image: '/images/kabinenroller-flow.jpg', gradient: 'from-violet-50 to-purple-50', desc: 'Fährt sich wie ein kleines Auto. Heizung, Scheibenwischer, voller Komfort.', features: ['Wie Autofahren, nur elektrisch', 'Heizung & Scheibenwischer', '2 Sitzplätze, 45 km/h'], shopUrl: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=landing&utm_campaign=kabinenroller&utm_content=flow' },
   ];
 
   /* ─── Testimonials data ─── */
@@ -822,6 +822,9 @@ export default function Home() {
                     <button onClick={() => openOfferModal(p.name)} className="w-full mt-auto btn btn-cta text-base py-3">
                       Angebot anfordern
                     </button>
+                    <a href={p.shopUrl} target="_blank" rel="noopener noreferrer" onClick={() => gtag.trackShopClick(p.name)} className="w-full mt-2 btn btn-secondary text-base py-3 text-center block">
+                      Im Shop ansehen
+                    </a>
                   </div>
                 </div>
               </Reveal>
@@ -962,8 +965,14 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-bold text-white mb-4" style={{ fontFamily: "'DM Serif Display', serif" }}>Unsere Modelle</h3>
               <ul className="space-y-2">
-                {['Vita Care 4000 (15 km/h)', 'Vita Care 1000 (25 km/h)', 'Neo E-Mobil (45 km/h)', 'Kabinenroller Cruise (25 km/h)', 'Kabinenroller Flow (45 km/h)'].map((m, i) => (
-                  <li key={i}><a href="#produkte" className="text-base text-white/40 hover:text-white/80 transition-colors">{m}</a></li>
+                {[
+                  { label: 'Seniorenmobile (Übersicht)', href: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=footer&utm_campaign=seniorenmobil' },
+                  { label: 'Vita 4000 (15 km/h)', href: 'https://elektroroller-futura.de/e-mobile-fuehrerscheinfrei?utm_source=emobilberater&utm_medium=footer&utm_campaign=seniorenmobil' },
+                  { label: 'Vita Care 1000 (25 km/h)', href: 'https://elektroroller-futura.de/elektromobilitaet-fuer-senioren?utm_source=emobilberater&utm_medium=footer&utm_campaign=seniorenmobil' },
+                  { label: 'Neo E-Mobil (45 km/h)', href: 'https://elektroroller-futura.de/elektro-quad?utm_source=emobilberater&utm_medium=footer&utm_campaign=seniorenmobil' },
+                  { label: 'Kabinenroller', href: 'https://elektroroller-futura.de/elektro-kabinenroller-futura?utm_source=emobilberater&utm_medium=footer&utm_campaign=kabinenroller' },
+                ].map((m, i) => (
+                  <li key={i}><a href={m.href} target="_blank" rel="noopener noreferrer" className="text-base text-white/40 hover:text-white/80 transition-colors">{m.label}</a></li>
                 ))}
               </ul>
             </div>
@@ -974,6 +983,9 @@ export default function Home() {
                   { href: '/ratgeber', label: 'Ratgeber' },
                   { href: '/ratgeber/fuehrerschein-elektroroller', label: 'Führerschein-Ratgeber' },
                   { href: '/ratgeber/reichweite-elektroroller', label: 'Reichweite-Ratgeber' },
+                  { href: '/ratgeber/elektromobil-kosten', label: 'Kosten-Ratgeber' },
+                  { href: '/ratgeber/seniorenmobil-vergleich', label: 'Modell-Vergleich' },
+                  { href: '/ratgeber/foerderung-elektromobil', label: 'Förderung & Zuschüsse' },
                   { href: '/impressum', label: 'Impressum' },
                   { href: '/datenschutz', label: 'Datenschutz' },
                   { href: '/agb', label: 'AGB' },
